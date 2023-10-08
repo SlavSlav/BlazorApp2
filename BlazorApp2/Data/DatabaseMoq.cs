@@ -47,7 +47,7 @@ namespace BlazorApp2.Data
             }; 
 
             Users[0].Account.User = Users[0];
-            Users[1].Account.User = Users[1;
+            Users[1].Account.User = Users[1];
 
             Games = new List<GameModel>()
             {
