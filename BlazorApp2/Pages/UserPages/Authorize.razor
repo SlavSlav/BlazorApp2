@@ -6,9 +6,13 @@
         <div>
             <p>@User.Account.FirstName</p>
             <p>@User.Money</p>
-            <button>Out</button>
+            <button @onclick="AccountOut">Out</button>
         </div>
-    }
+        @foreach (var order in User.GameOrders)
+        {
+            <GameComponents Game="order.Game"></GameComponents>
+        }
+    }   
     else
     {
         <EditForm Model="Account" OnSubmit="OnSubmit">
@@ -25,6 +29,11 @@
     </EditForm>        
     }
 
+    <GameComponents Game ="new GameModel()
+    {
+        Id = Guid.NewGuid()
+
+    }"></GameComponents>
 
 
 
@@ -53,9 +62,15 @@
                 User = account.User;
             }
         };
-        
-        
 
+
+
+    }
+
+    public void AccountOut()
+    {
+        User = null;
+        Account = new AccountModel();
     }
 
     protected override void OnAfterRender(bool firstRender)
