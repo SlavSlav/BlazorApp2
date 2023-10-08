@@ -1,28 +1,31 @@
 ﻿@page "/authorize"
-@using BlazorApp2.Data;
 <h3>Authorize</h3>
 
-<EditForm Model = "Account" OnSubmit="OnSubmit">
-    <div>
-        <label>Email</label>
-        <input @bind-value="Account.Email"/>
-    </div>
-    <div>
-        <label>Password</label>
-        <input @bind-value="Account.Password"/>
-    </div>
-    <button type="submit">Send</button>
-
-</EditForm>
-
-<div>
     @if (User != null)
     {
-    <p>@User.Account.FirstName</p>
-    <p>@User.Money</p>
+        <div>
+            <p>@User.Account.FirstName</p>
+            <p>@User.Money</p>
+            <button>Out</button>
+        </div>
     }
-    
-</div>
+    else
+    {
+        <EditForm Model="Account" OnSubmit="OnSubmit">
+            <div>
+                <label>Email</label>
+                <input @bind-value="Account.Email" />
+            </div>
+            <div>
+                <label>Password</label>
+                <input @bind-value="Account.Password" />
+            </div>
+            <button type="submit">Send</button>
+
+    </EditForm>        
+    }
+
+
 
 
 @code {
@@ -31,7 +34,11 @@
 
     public Authorize()
     {
-        Account = new AccountModel();
+        Account = new AccountModel()
+        {
+            Email = "bisnes@gmail.com",
+            Password = "123321"
+        };
     }
 
     public void OnSubmit(EditContext editContext)

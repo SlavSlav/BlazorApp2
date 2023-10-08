@@ -25,8 +25,8 @@ namespace BlazorApp2.Data
                 {
                     Id = Guid.NewGuid(),
                     Email = "bisnes@gmail.com",
-                    FirstName = "Vladislav",
-                    LastName = "Cherkis",
+                    FirstName = "Vlad",
+                    LastName = "Cherk",
                     Phone = "0977258244",
                     Password = "123321"
                 };
