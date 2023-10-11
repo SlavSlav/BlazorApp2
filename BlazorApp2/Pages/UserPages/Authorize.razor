@@ -1,7 +1,35 @@
 ﻿@page "/authorize"
 <h3>AUTORIZE</h3>
 
-<AuthorizeView>
+@if (User != null)
+{
+    <div>
+        <p>@User.Account.FirstName</p>
+        <p>@User.Money</p>
+        <button @onclick="AccountOut">Out</button>
+    </div>
+    @foreach (var order in User.GameOrders)
+    {
+        <GameComponents Game="order.Game"></GameComponents>
+    }
+}
+else
+{
+    <EditForm Model="Account" OnSubmit="OnSubmit">
+        <div>
+            <label>Email</label>
+            <input @bind-value="Account.Email" />
+        </div>
+        <div>
+            <label>Password</label>
+            <input @bind-value="Account.Password" />
+        </div>
+        <button type="submit">Send</button>
+
+    </EditForm>
+}
+
+@* <AuthorizeView>
     <Authorized>
         <div>
             <p>@User.Account.FirstName</p>
@@ -27,10 +55,10 @@
 
             <button type="submit">Send</button>
 
-        </EditForm> *@
+        </EditForm> *
     </NotAuthorized>
    
-</AuthorizeView>
+</AuthorizeView> *@
 
    @*  @if (User != null)
     {
@@ -59,12 +87,11 @@
 
     </EditForm>        
     } *@
-
-    <GameComponents Game ="new GameModel()
+    <p>----------------------------------</p>
+    @foreach (var game in Games)    
     {
-        Id = Guid.NewGuid()
-
-    }"></GameComponents>
+    <GameComponents Game="game"></GameComponents>
+    }
 
 
 
@@ -102,14 +129,18 @@
 
         using (EntityDataBase db = new EntityDataBase())
         {
-            var account = db.Accounts.FirstOrDefault(a => 
+            var account = db.Accounts
+            .Include(a=> a.User)
+                .ThenInclude(u => u.GameOrders)
+                    .ThenInclude(o => o.Game)
+            .FirstOrDefault(a => 
                 a.Email == Account.Email &&
                 a.Password == Account.Password);
 
             if (account == null)
                 return;
 
-            User = account.User;
+            User = account.User; 
             var userGames = from order in User.GameOrders
                             select order.Game;
             var games = db.Games.ToList();
