@@ -9,7 +9,7 @@ namespace BlazorApp2.Data
         public  DbSet<UserModel> Users { get; set; }
         public  DbSet<GameModel> Games { get; set; }
         public  DbSet<OrderModel> Orders { get; set; }
-        public DbSet<CompanyModel> Company { get; set; }
+        public DbSet<CompanyModel> Companies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

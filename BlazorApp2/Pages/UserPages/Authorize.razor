@@ -1,6 +1,7 @@
 ﻿@page "/authorize"
+<h3>AUTORIZE</h3>
 
-@* <AuthorizeView>
+<AuthorizeView>
     <Authorized>
         <div>
             <p>@User.Account.FirstName</p>
@@ -29,7 +30,7 @@
     </NotAuthorized>
    
 </AuthorizeView>
- *@
+
    @*  @if (User != null)
     {
         <div>
@@ -89,105 +90,7 @@
     protected override async Task OnInitializedAsync()
     {
         using(EntityDataBase db = new EntityDataBase())
-        {   
-            if (db.Games.Count() == 0)
-            {
-                // var users = new List<UserModel>()
-                // {
-                //     new UserModel()
-                //     {                        
-                //         Account = new AccountModel()
-                //         {
-                //             Id =    Guid.NewGuid(),
-                //             Email = "bisnesbrend@gmail.com",
-                //             FirstName = "Vladislav",
-                //             LastName = "Cherkis",
-                //             Phone = "0977258244",
-                //             Password = "123321"
-                //         }, 
-                //         Settings = new SettingsModel()
-                //         {
-                //             Dark=false,
-                //         },
-                //         GameOrders = new List<OrderModel>()
-                //     },
-                //     new UserModel()
-                //     {                        
-                //         Account= new AccountModel()
-                //         {
-                //             Id = Guid.NewGuid(),
-                //             Email = "bisnes@gmail.com",
-                //             FirstName = "Vlad",
-                //             LastName = "Cherk",
-                //             Phone = "0977258244",
-                //             Password = "123321"
-                //         },
-                //         Settings = new SettingsModel()
-                //         {
-                //             Dark=false,
-                //         },
-                //         GameOrders = new List<OrderModel>()
-                //     }
-                // };
-                // db.Users.AddRange(users);
-                // db.SaveChanges();
-                var companies = new List<CompanyModel>()
-                {
-                    new CompanyModel()
-                    {
-                        Title = "Larian Studios",
-                        Games = new List<GameModel>()
-                        {
-                            new GameModel()
-                            {
-                                Id= Guid.NewGuid(),
-                                Title = "Baldur's Gate 3",
-                                Image = "https://image.api.playstation.com/vulcan/ap/rnd/202308/3103/70c864f97f52f9b632d1f519a0364a5d0e2b98dc5501f058.jpg?w=620&thumb=false",
-                                Price = 1000,
-                                GamesOrders = new List<OrderModel>()
-                            },
-
-                            new GameModel()
-                            {
-                                Id= Guid.NewGuid(),
-                                Title = "Divinity: Original Sin 2",
-                                Image = "https://cdn.cloudflare.steamstatic.com/steam/apps/435150/capsule_616x353.jpg?t=1668591196",
-                                Price = 3476,
-                                GamesOrders = new List<OrderModel>()
-                            },
-
-                            new GameModel()
-                            {
-                                Id= Guid.NewGuid(),
-                                Title = "Divinity: Original Sin - Enhanced Edition",
-                                Image = "https://cdn.cloudflare.steamstatic.com/steam/apps/373420/header.jpg?t=1665155407",
-                                Price = 799,
-                                GamesOrders = new List<OrderModel>()
-                            },
-                        }
-                    },
-                    new CompanyModel()
-                    {
-                        Title = "Blizzard Entertainment",
-                        Games = new List<GameModel>()
-                        {
-                            new GameModel()
-                            {
-                                Id= Guid.NewGuid(),
-                                Title = "StarCraft II",
-                                Image = "https://bnetcmsus-a.akamaihd.net/cms/blog_header/2g/2G4VZH5TIWJF1602720144046.jpg",
-                                Price = 0,
-                                GamesOrders = new List<OrderModel>()
-                            }
-                        }
-                    }
-                };
-
-               
-                db.Company.AddRange(companies);
-                db.SaveChanges();
-            }
-
+        {        
             Games = db.Games.ToList();
         }
     }
@@ -195,14 +98,21 @@
     public void OnSubmit(EditContext editContext)
     {
         var valid = editContext.Validate();
-        using (var database = new EntityDataBase())
+
+        using (EntityDataBase db = new EntityDataBase())
         {
-            var account = database.Accounts.FirstOrDefault(a => a.Email == Account.Email &&
-                                                            a.Password == Account.Password);
-            if (account != null)
-            {
-                User = account.User;
-            }
+            var account = db.Accounts.FirstOrDefault(a => 
+                a.Email == Account.Email &&
+                a.Password == Account.Password);
+
+            if (account == null)
+                return;
+
+            User = account.User;
+            var userGames = from order in User.GameOrders
+                            select order.Game;
+            var games = db.Games.ToList();
+            Games = games.Except(userGames).ToList();
         };
     }
 
