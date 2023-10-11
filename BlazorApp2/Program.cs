@@ -1,4 +1,4 @@
-//using BlazorApp2.Data;
+using BlazorApp2.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -11,8 +11,9 @@ namespace BlazorApp2
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages(); //.AddRazorRuntimeCompilation();
             builder.Services.AddServerSideBlazor();
+            //builder.Services.AddDbContext<EntityDataBase>();
             //builder.Services.AddSingleton<WeatherForecastService>();
 
             var app = builder.Build();
@@ -31,6 +32,9 @@ namespace BlazorApp2
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
 

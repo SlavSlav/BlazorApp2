@@ -7,6 +7,8 @@ namespace BlazorApp2.Data
     {
         public  DbSet<AccountModel> Accounts { get; set; }
         public  DbSet<UserModel> Users { get; set; }
+        public  DbSet<GameModel> Games { get; set; }
+        public  DbSet<OrderModel> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
