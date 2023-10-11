@@ -15,7 +15,7 @@
         }
     </Authorized>
     <NotAuthorized>
-        <EditForm Model="Account" OnSubmit="OnSubmit">
+  @*       <EditForm Model="Account" OnSubmit="OnSubmit">
             <div>
                 <label>Email</label>
                 <input @bind-value="Account.Email" />
@@ -24,9 +24,10 @@
                 <label>Password</label>
                 <input @bind-value="Account.Password" />
             </div>
+
             <button type="submit">Send</button>
 
-            </EditForm>
+        </EditForm> *@
     </NotAuthorized>
    
 </AuthorizeView>

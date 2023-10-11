@@ -11,7 +11,7 @@ namespace BlazorApp2
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages(); //.AddRazorRuntimeCompilation();
+            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
             builder.Services.AddServerSideBlazor();
             //builder.Services.AddDbContext<EntityDataBase>();
             //builder.Services.AddSingleton<WeatherForecastService>();
