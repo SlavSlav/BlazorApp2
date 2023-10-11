@@ -89,7 +89,68 @@
     protected override async Task OnInitializedAsync()
     {
         using(EntityDataBase db = new EntityDataBase())
-        {            
+        {   
+            if (db.Users.Count() == 0)
+            {
+                var users = new List<UserModel>()
+                {
+                    new UserModel()
+                    {
+                        Id = Guid.NewGuid(),
+                        Account = new AccountModel()
+                        {
+                            Id =    Guid.NewGuid(),
+                            Email = "bisnesbrend@gmail.com",
+                            FirstName = "Vladislav",
+                            LastName = "Cherkis",
+                            Phone = "0977258244",
+                            Password = "123321"
+                        },
+                        GameOrders = new List<OrderModel>()
+                    },
+                    new UserModel()
+                    {
+                        Id = Guid.NewGuid(),
+                        Account= new AccountModel()
+                        {
+                            Id = Guid.NewGuid(),
+                            Email = "bisnes@gmail.com",
+                            FirstName = "Vlad",
+                            LastName = "Cherk",
+                            Phone = "0977258244",
+                            Password = "123321"
+                        },
+                        GameOrders = new List<OrderModel>()
+                    }
+                };
+                db.Users.AddRange(users);
+                db.SaveChanges();
+
+
+                var games = new List<GameModel>()
+                {
+                    new GameModel()
+                    {
+                        Id= Guid.NewGuid(),
+                        Title = "Baldur's Gate 3",
+                        Image = "https://image.api.playstation.com/vulcan/ap/rnd/202308/3103/70c864f97f52f9b632d1f519a0364a5d0e2b98dc5501f058.jpg?w=620&thumb=false",
+                        Price = 1000,
+                        GamesOrders = new List<OrderModel>()
+                    },
+
+                    new GameModel()
+                    {
+                        Id= Guid.NewGuid(),
+                        Title = "StarCraft II",
+                        Image = "https://bnetcmsus-a.akamaihd.net/cms/blog_header/2g/2G4VZH5TIWJF1602720144046.jpg",
+                        Price = 1000,
+                        GamesOrders = new List<OrderModel>()
+                    }
+                };
+                db.Games.AddRange(games);
+                db.SaveChanges();
+            }
+
             Games = db.Games.ToList();
         }
     }
